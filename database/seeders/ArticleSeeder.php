@@ -16,7 +16,7 @@ class ArticleSeeder extends Seeder
     {
         DB::table('articles')->truncate();
 
-            Article::factory()
+        Article::factory()
         ->count(50)
         ->create();
     }
