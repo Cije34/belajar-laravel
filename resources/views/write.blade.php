@@ -49,7 +49,7 @@
                 line-height: 1.6;
                 padding-left: 0;
                 min-height: 60vh; /* <- DIUBAH MENJADI LEBIH BESAR & RESPONSIF */
-                min-width: 77vh;
+                min-width: 74vh;
         }
         
         /* Memberi gaya pada icon '+' */
@@ -98,6 +98,9 @@
                         
                         <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story..."></textarea>
                     </div>
+
+
+
                 </form>
             </div>
         </div>
