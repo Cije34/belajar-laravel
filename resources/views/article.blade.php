@@ -31,10 +31,10 @@
 
                     </div>
                     <div class="d-flex justify-content-end mt-3">
-                        <a href="/edit/{{ $articles->id }}" class="btn btn-sm me-2 border" style="background: transparent; color: #000;">
+                        <a href="article/edit/{{ $articles->id }}" class="btn btn-sm me-2 border" style="background: transparent; color: #000;">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
-                        <a href="/delete/{{ $articles->id }}" class="btn btn-sm btn-danger">
+                        <a href="article/delete/{{ $articles->id }}" class="btn btn-sm btn-danger">
                             <i class="bi bi-trash"></i> Delete
                         </a>
                     </div>

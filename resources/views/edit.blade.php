@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Write
+    Edit
 @endsection
 
 @section('content')
@@ -19,7 +19,7 @@
 
         <div class="d-flex me-5">
 
-            <a class="btn btn-outline-primary me-2 bg-success text-white" id="publishButton">Publish</a>   
+            <a class="btn btn-outline-primary me-2 bg-success text-white" id="saveButton">Save</a>   
 
             <a href="{{ url('/logout') }}" class="btn btn-outline-primary me-2">Logout</a>
 
@@ -70,11 +70,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded',function(){
-            const PublishButton = document.getElementById('PublishButton');
+            const saveButton = document.getElementById('saveButton');
             const articleForm = document.getElementById('articleForm');
 
-            if (publishButton && articleForm) {
-            publishButton.addEventListener('click', function(event) {
+            if (saveButton && articleForm) {
+            saveButton.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the default action of the <a> tag
                 articleForm.submit(); // Submit the form
             });
@@ -82,25 +82,23 @@
         });
     </script>   
 
-
     {{-- body --}}
     <main class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <form action="{{ url('/article/store') }}" method="POST" id="articleForm">
+                <form action="{{ url('/article/update/'.$article->id.'') }}" method="POST" id="articleForm">
                     @csrf
                     <div class="mb-3">
-                        <input type="text" class="form-control title-input" id="judul" name="judul" placeholder="Title">
+                        <input type="text" class="form-control title-input" id="judul" name="judul" placeholder="Title" value="{{ $article->judul }}">
                     </div>
 
                     <div class="d-flex align-items-start mt-4">
                         <i class="bi bi-plus-circle add-icon me-2 mt-1"></i>
                         
-                        <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story..."></textarea>
+                        <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story...">{{$article->content}}</textarea>
                     </div>
                 </form>
             </div>
         </div>
     </main>
-
-            @endsection
+@endsection

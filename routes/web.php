@@ -16,6 +16,9 @@ route::middleware(['auth'])->group(function () {
     route::get('/logout',[AuthController::class,'logout']);
     route::get('/article/write', [ArticleController::class, 'write']);
     route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
+    route::get('/article/edit/{id}', [ArticleController::class, 'edit']);
+    route::post('/article/update/{id}', [ArticleController::class, 'update'])->name('article.update');
+    route::get('/article/delete/{id}', [ArticleController::class, 'delete']);
 });
 
 
