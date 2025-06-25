@@ -12,6 +12,11 @@ Article
 @section('value')
 {{ $judul }}
 @endsection
+@if(session('success'))
+    <div class="alert alert-success text-center mt-3" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
 
     @foreach ($article as $articles)
         <a href="{{ url('/article/'.$articles->id.'/full') }}" class="text-decoration-none text-dark">

@@ -1,0 +1,106 @@
+@extends('layouts.app')
+
+@section('title')
+    Write
+@endsection
+
+@section('content')
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="ms-5">
+            <a href="/article" class="navbar-brand">Article</a>
+        </div>
+        <div class="mt-3 me-3">
+            <form class="d-flex" method="get" action="@yield('action')">
+                <input name="judul" class="form-control me-2" value="@yield('value')" type="search" placeholder="Search">
+                <button class="btn btn-outline-success" type="submit" id="submit">cari</button>
+            </form>
+        </div>
+
+        <div class="d-flex me-5">
+
+            <a  class="btn btn-outline-primary me-2 bg-success text-white" id="publishButton">Publish</a>   
+
+            <a href="{{ url('/logout') }}" class="btn btn-outline-primary me-2">Logout</a>
+
+        </div>
+    </nav>
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Memberi sedikit warna latar belakang agar form putih menonjol */
+        }
+
+        /* Menghilangkan border, shadow, dan mengubah ukuran font pada input Judul */
+        .title-input {
+            border: 0;
+            box-shadow: none !important; /* !important untuk menimpa style focus bootstrap */
+            font-size: 2.5rem; /* Ukuran font besar seperti H1 */
+            font-weight: 600;
+            padding-left: 0;
+        }
+
+        /* Menghilangkan border, shadow, dan resize handle pada textarea */
+        .story-input {
+                border: 0;
+                box-shadow: none !important;
+                resize: none; 
+                font-size: 1.1rem;
+                line-height: 1.6;
+                padding-left: 0;
+                min-height: 60vh; /* <- DIUBAH MENJADI LEBIH BESAR & RESPONSIF */
+                min-width: 77vh;
+        }
+        
+        /* Memberi gaya pada icon '+' */
+        .add-icon {
+            font-size: 1.5rem;
+            color: #adb5bd; /* Warna abu-abu muted */
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .add-icon:hover {
+            color: #212529; /* Warna hitam saat di-hover */
+            transform: rotate(90deg);
+        }
+    </style>
+
+    {{-- java Script --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const PublishButton = document.getElementById('PublishButton');
+            const articleForm = document.getElementById('articleForm');
+
+            if (publishButton && articleForm) {
+            publishButton.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default action of the <a> tag
+                articleForm.submit(); // Submit the form
+            });
+        }
+        });
+    </script>   
+
+
+    {{-- body --}}
+    <main class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form action="{{ url('/article/store') }}" method="POST" id="articleForm">
+                    @csrf
+                    <div class="mb-3">
+                        <input type="text" class="form-control title-input" id="judul" name="judul" placeholder="Title">
+                    </div>
+
+                    <div class="d-flex align-items-start mt-4">
+                        <i class="bi bi-plus-circle add-icon me-2 mt-1"></i>
+                        
+                        <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story..."></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+            @endsection

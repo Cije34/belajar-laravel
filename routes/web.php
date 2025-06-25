@@ -14,8 +14,8 @@ route::middleware(['auth'])->group(function () {
     route::get('/article', [ArticleController::class,'index'])->name('article');
     route::get('/article/{id}/full',[ArticleController::class,'show']);
     route::get('/logout',[AuthController::class,'logout']);
-
-
+    route::get('/article/write', [ArticleController::class, 'write']);
+    route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
 });
 
 

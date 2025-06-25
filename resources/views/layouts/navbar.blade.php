@@ -12,7 +12,7 @@
 
 <div class="d-flex me-5">
 
-<a href="/login" class="btn btn-outline-primary me-2">Write</a>
+<a href="/article/write" class="btn btn-outline-primary me-2">Write</a>
 
 <a href="{{ url('/logout') }}" class="btn btn-outline-primary me-2">Logout</a>
 

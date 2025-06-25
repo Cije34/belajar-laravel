@@ -11,7 +11,7 @@ class ArticleController extends Controller
 {
      public function index(Request $request){
         $judul = $request->judul;
-        $article = Article::where('judul','LIKE','%'.$judul.'%')->simplePaginate(10);
+        $article = Article::where('judul','LIKE','%'.$judul.'%')->orderBy('id','desc')->simplePaginate(10);
        // return $article;
         return view("article" , ["article"=> $article, "judul" => $judul]);
     }
@@ -23,5 +23,20 @@ class ArticleController extends Controller
         }
         return view('single', ['article' => $article,'judul' => $judul]);
 
+    }
+
+    public function write( ){
+        return view('write');
+    }
+
+    public function store (Request $request){
+        $Validate = $request->validate([
+            'judul' => 'required',
+            'content' => 'required'
+        ]);
+
+        Article::create($Validate);
+
+        return redirect()->route('article')->with('success', 'Artikel berhasil ditambahkan');
     }
 }
