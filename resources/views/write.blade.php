@@ -19,7 +19,7 @@
 
         <div class="d-flex me-5">
 
-            <a class="btn btn-outline-primary me-2 bg-success text-white" id="publishButton">Publish</a>   
+            <a class="btn btn-outline-primary me-2 bg-success text-white" id="publishButton">Publish</a>
 
             <a href="{{ url('/logout') }}" class="btn btn-outline-primary me-2">Logout</a>
 
@@ -44,14 +44,14 @@
         .story-input {
                 border: 0;
                 box-shadow: none !important;
-                resize: none; 
+                resize: none;
                 font-size: 1.1rem;
                 line-height: 1.6;
                 padding-left: 0;
                 min-height: 60vh; /* <- DIUBAH MENJADI LEBIH BESAR & RESPONSIF */
                 min-width: 74vh;
         }
-        
+
         /* Memberi gaya pada icon '+' */
         .add-icon {
             font-size: 1.5rem;
@@ -80,7 +80,7 @@
             });
         }
         });
-    </script>   
+    </script>
 
 
     {{-- body --}}
@@ -95,11 +95,29 @@
 
                     <div class="d-flex align-items-start mt-4">
                         <i class="bi bi-plus-circle add-icon me-2 mt-1"></i>
-                        
+
                         <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story..."></textarea>
                     </div>
 
+                    <div class="mb-3 mt-4">
+                        <label for="image" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="image" name="image" accept="image/*">
+                    </div>
 
+                    <label class="form-label">Tags</label>
+
+                    <div class="mb-3">
+
+                        @foreach ($tag as $key => $tags)
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="tag{{$key}}" name="tags[]" value="{{ $tags->id }}">
+                            <label class="form-check-label" for="tag{{$key}}">{{ $tags->name }}</label>
+                        </div>
+
+                        @endforeach
+
+
+                    </div>
 
                 </form>
             </div>

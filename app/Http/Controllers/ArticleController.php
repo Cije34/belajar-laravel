@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class ArticleController extends Controller
 
     public function show(Request $request, $id){
         $judul = $request->judul;
-        $article = Article::with('comments')->where('id', $id)->first();
+        $article = Article::with('comments', 'tags')->where('id', $id)->first();
         // return $article;
         if(!$article){
             abort(404);
@@ -28,26 +29,32 @@ class ArticleController extends Controller
     }
 
     public function write(){
-        return view('write');
+        $tag = Tag::all();
+        // return $tag;
+        return view('write',['tag' => $tag]);
     }
 
     public function store (Request $request){
+        // return $request->all();
         $Validate = $request->validate([
             'judul' => 'required|unique:articles,judul',
             'content' => 'required'
         ]);
 
-        Article::create($Validate);
-
+        $article = Article::create($Validate);
+        $article->tags()->attach($request->tags); // Attach selected tags to the article
         return redirect()->route('article')->with('success', 'Artikel berhasil ditambahkan');
     }
 
     public function edit($id){
-        $article = Article::find($id);
+        $article = Article::with('tags')->find($id);
+        $tag = Tag::all();
+        // return ['article' => $article, 'tag' => $tag];
+        // return $article;
         if(!$article){
             abort(404);
         }
-        return view('edit', ['article' => $article]);
+        return view('edit', ['article' => $article, 'tag' => $tag]);
     }
 
     public function update(Request $request, $id){
@@ -56,7 +63,10 @@ class ArticleController extends Controller
             'judul' => 'required|unique:articles,judul,'.$article->id,
             'content' => 'required'
         ]);
+
+        $article->tags()->sync($request->tags); // Sync selected tags with the article
         $article->update($Validate);
+
         return redirect()->route('article')->with('success', 'Artikel berhasil diupdate');
     }
 

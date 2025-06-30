@@ -36,18 +36,27 @@ Single
                 <article class="bg-white p-4 rounded shadow-sm">
                     <h1 class="mb-3">{{$article->judul}}</h1>
 
-                    {{-- <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center mb-3">
                         <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Author">
                         <div>
                             <strong>Daniel Scott</strong><br>
                             <small class="text-muted">May 23, 2025 • 4 min read</small>
                         </div>
-                    </div> --}}
+                    </div>
 
                     <hr>
                     <p class="mt-5">
                         {{ $article->content }}
                     </p>
+
+                    <div class="mt-4">
+                        <h6>Tags:</h6>
+                        @foreach ($article->tags as $tag)
+                            <div>
+                                #{{$tag->name}}
+                            </div>
+                        @endforeach
+                    </div>
                     <!-- You can add a list of concepts here -->
 
                     <p class="mt-4">{{$article->updated_at}}</p>
