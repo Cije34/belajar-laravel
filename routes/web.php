@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentController;
+use Dom\Comment;
 
 Route::get('/', function () {
 return view('welcome');
@@ -19,6 +21,7 @@ route::middleware(['auth'])->group(function () {
     route::get('/article/edit/{id}', [ArticleController::class, 'edit']);
     route::post('/article/update/{id}', [ArticleController::class, 'update'])->name('article.update');
     route::get('/article/delete/{id}', [ArticleController::class, 'delete']);
+    route::post('/article/comment/{id}', [CommentController::class, 'store']);
 });
 
 

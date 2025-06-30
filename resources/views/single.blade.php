@@ -56,6 +56,47 @@ Single
         </div>
     </div>
 
+    <!-- Display Comments -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <div class="bg-white p-4 rounded shadow-sm">
+                    <h5 class="mb-4">Comments</h5>
+                    @if($article->comments->isEmpty())
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                    @else
+                        @foreach($article->comments as $comment)
+                            <div class="mb-3 border-bottom pb-2">
+                                <strong>{{ $comment->user->name ?? 'Anonymous' }}</strong>
+                                <span class="text-muted small ms-2">{{ $comment->created_at }}</span>
+                                <p class="mb-1 mt-2">{{ $comment->description }}</p>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    @if (session('success'))
+    <div class="alert alert-success text-center mt-3" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    <div class="container mt-5 border p-4 rounded">
+        <form action="{{url('/article/comment/'.$article->id)}}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label">Your Comment</label>
+                <input type="hidden" name="article_id" value="{{$article->id}}">
+                <textarea class="form-control" name="description" rows="3" placeholder="Write a comment..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -9,6 +9,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 class Categori extends Model
 {
     use HasFactory;
+    protected $table = 'categoris';
     protected $fillable = [
         'categori'
     ];

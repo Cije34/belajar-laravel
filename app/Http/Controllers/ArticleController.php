@@ -18,7 +18,8 @@ class ArticleController extends Controller
 
     public function show(Request $request, $id){
         $judul = $request->judul;
-        $article = Article::where('id', $id)->first();
+        $article = Article::with('comments')->where('id', $id)->first();
+        // return $article;
         if(!$article){
             abort(404);
         }
@@ -26,7 +27,7 @@ class ArticleController extends Controller
 
     }
 
-    public function write( ){
+    public function write(){
         return view('write');
     }
 

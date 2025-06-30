@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categoris', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('categori', 100);
+            $table->unsignedBigInteger('article_id');
+            $table->text('description');
             $table->timestamps();
-            
+
+            $table->foreign('article_id')->references('id')->on('articles');
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categoris');
+        Schema::dropIfExists('comments');
     }
 };

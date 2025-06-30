@@ -11,4 +11,8 @@ class Article extends Model
     protected $table = "articles";
     protected $fillable = [
         "judul","content"];
+
+    public function comments (){
+        return $this->hasMany(Comment::class);
+    }
 }
