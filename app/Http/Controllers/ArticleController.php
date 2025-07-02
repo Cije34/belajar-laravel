@@ -7,6 +7,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -19,7 +20,7 @@ class ArticleController extends Controller
 
     public function show(Request $request, $id){
         $judul = $request->judul;
-        $article = Article::with('comments', 'tags')->where('id', $id)->first();
+        $article = Article::with('comments', 'tags','image')->where('id', $id)->first();
         // return $article;
         if(!$article){
             abort(404);
@@ -35,19 +36,44 @@ class ArticleController extends Controller
     }
 
     public function store (Request $request){
-        // return $request->all();
-        $Validate = $request->validate([
-            'judul' => 'required|unique:articles,judul',
-            'content' => 'required'
-        ]);
+    // Validasi input
+    $validate = $request->validate([
+        'judul' => 'required|unique:articles,judul',
+        'content' => 'required',
+        'tags' => 'array',
+        'tags.*' => 'exists:tags,id', // Validasi untuk memastikan setiap tag yang dipilih ada di database
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk gambar
 
-        $article = Article::create($Validate);
-        $article->tags()->attach($request->tags); // Attach selected tags to the article
+    ]);
+    return $validate ;
+    // Buat artikel terlebih dahulu
+    $article = Article::create([
+        'judul' => $validate['judul'],
+        'content' => $validate['content'],
+    ]);
+
+    // Handle image upload SETELAH artikel dibuat
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imagePath = $image->store('images', 'public');
+
+        // Buat relasi image setelah artikel tersimpan
+        $article->image()->create([
+            'url' => $imagePath,
+            'imageable_id' => $article->id,
+            'imageable_type' => Article::class
+        ]);
+    }
+
+    // Attach tags (jika ada)
+    if ($request->has('tags')) {
+        $article->tags()->attach($request->tags);
+    }
         return redirect()->route('article')->with('success', 'Artikel berhasil ditambahkan');
     }
 
     public function edit($id){
-        $article = Article::with('tags')->find($id);
+        $article = Article::with('tags','image')->find($id);
         $tag = Tag::all();
         // return ['article' => $article, 'tag' => $tag];
         // return $article;
@@ -61,13 +87,33 @@ class ArticleController extends Controller
         $article = Article::findorFail($id);
         $Validate = $request->validate([
             'judul' => 'required|unique:articles,judul,'.$article->id,
-            'content' => 'required'
+            'content' => 'required',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id', // Validasi untuk memastikan setiap tag yang dipilih ada di database
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk gambar
         ]);
 
         $article->tags()->sync($request->tags); // Sync selected tags with the article
         $article->update($Validate);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($article->image) {
+                Storage::disk('public')->delete($article->image->url);
+                $article->image->delete();
+            }
+            // Simpan gambar baru
+            $image = $request->file('image');
+            $imagePath = $image->store('images', 'public');
+
+            $article->image()->updateOrCreate([
+                'url' => $imagePath,
+                'imageable_id' => $article->id,
+                'imageable_type' => Article::class
+            ]);
 
         return redirect()->route('article')->with('success', 'Artikel berhasil diupdate');
+        }
     }
 
     public function delete($id){

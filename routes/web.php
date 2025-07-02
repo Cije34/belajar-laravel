@@ -1,10 +1,11 @@
 <?php
 
+use Dom\Comment;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
-use Dom\Comment;
 
 Route::get('/', function () {
 return view('welcome');

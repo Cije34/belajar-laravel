@@ -15,7 +15,13 @@ class Article extends Model
     public function comments (){
         return $this->hasMany(Comment::class);
     }
+
+
     public function tags(){
         return $this->belongsToMany(Tag::class, 'article_tag', 'article_id', 'tag_id');
+    }
+
+    public function image(){
+        return $this->morphOne(Image::class, 'imageable');
     }
 }

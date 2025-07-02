@@ -87,7 +87,7 @@
     <main class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <form action="{{ url('/article/store') }}" method="POST" id="articleForm">
+                <form action="{{ url('/article/store') }}" method="POST" id="articleForm" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control title-input" id="judul" name="judul" placeholder="Title">
@@ -118,7 +118,6 @@
 
 
                     </div>
-
                 </form>
             </div>
         </div>

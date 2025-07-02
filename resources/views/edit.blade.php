@@ -86,7 +86,7 @@
     <main class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <form action="{{ url('/article/update/'.$article->id.'') }}" method="POST" id="articleForm">
+                <form action="{{ url('/article/update/'.$article->id.'') }}" method="POST" id="articleForm" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control title-input" id="judul" name="judul" placeholder="Title" value="{{ $article->judul }}">
@@ -98,9 +98,14 @@
                         <textarea class="story-input" class="form-control" id="content" name="content" placeholder="Tell your story...">{{$article->content}}</textarea>
                     </div>
 
-                     <div class="mb-3 mt-4">
+                    <div class="mb-3 mt-4">
                         <label for="image" class="form-label">Upload Image</label>
-                        <input class="form-control" type="file" id="image" name="image" accept="image/*">
+                        <input class="form-control" type="file" id="image" name="image" accept="image/*" value="{{ $article->image ? asset('storage/' . $article->image->url) : '' }}">
+                        @if($article->image)
+                            <div class="mt-3">
+                                <img src="{{ asset('storage/' . $article->image->url) }}" alt="Current Image" style="max-width: 200px; max-height: 200px;">
+                            </div>
+                        @endif
                     </div>
 
                     <label class="form-label">Tags</label>

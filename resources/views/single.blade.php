@@ -44,6 +44,11 @@ Single
                         </div>
                     </div>
 
+                    @if($article->image)
+                    <img src="{{ asset('storage/'.$article->image->url) }}" class="img-fluid mb-3" alt="Article Image">
+                    @endif
+
+
                     <hr>
                     <p class="mt-5">
                         {{ $article->content }}
