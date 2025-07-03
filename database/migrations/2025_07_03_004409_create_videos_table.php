@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('article_id');
-            $table->text('description');
+            $table->string('title');
+            $table->string('url')->unique();
             $table->timestamps();
-
-            $table->foreign('article_id')->references('id')->on('articles');
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('videos');
     }
 };

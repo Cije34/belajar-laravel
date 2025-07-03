@@ -4,6 +4,7 @@ use Dom\Comment;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 
@@ -23,6 +24,9 @@ route::middleware(['auth'])->group(function () {
     route::post('/article/update/{id}', [ArticleController::class, 'update'])->name('article.update');
     route::get('/article/delete/{id}', [ArticleController::class, 'delete']);
     route::post('/article/comment/{id}', [CommentController::class, 'store']);
+    route::get('/video',[VideoController::class, 'index'])->name('video');
+    route::get('/video/show/{id}', [VideoController::class, 'show']);
+    route::post('/article/commentVideo/{id}',[CommentController::class, 'storeVideo']);
 });
 
 

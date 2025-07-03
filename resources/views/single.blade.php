@@ -83,7 +83,7 @@ Single
                             <div class="mb-3 border-bottom pb-2">
                                 <strong>{{ $comment->user->name ?? 'Anonymous' }}</strong>
                                 <span class="text-muted small ms-2">{{ $comment->created_at }}</span>
-                                <p class="mb-1 mt-2">{{ $comment->description }}</p>
+                                <p class="mb-1 mt-2">{{ $comment->body }}</p>
                             </div>
                         @endforeach
                     @endif
@@ -105,7 +105,7 @@ Single
             <div class="mb-3">
                 <label class="form-label">Your Comment</label>
                 <input type="hidden" name="article_id" value="{{$article->id}}">
-                <textarea class="form-control" name="description" rows="3" placeholder="Write a comment..."></textarea>
+                <textarea class="form-control" name="body" rows="3" placeholder="Write a comment..."></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>

@@ -13,7 +13,7 @@ class Article extends Model
         "judul","content"];
 
     public function comments (){
-        return $this->hasMany(Comment::class);
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 
