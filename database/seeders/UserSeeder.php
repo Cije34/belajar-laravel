@@ -15,10 +15,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         DB::table('users')->truncate();
 
         User::factory()
-        ->count(50)
+        ->count(10)
         ->create();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

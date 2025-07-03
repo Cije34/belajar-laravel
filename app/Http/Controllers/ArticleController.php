@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 
@@ -83,8 +84,9 @@ class ArticleController extends Controller
     public function edit($id){
         $article = Article::with('tags','image')->find($id);
         $tag = Tag::all();
-        // return ['article' => $article, 'tag' => $tag];
-        // return $article;
+
+        Gate::authorize('update', $article); // Memastikan user memiliki izin untuk mengedit artikel
+
         if(!$article){
             abort(404);
         }
@@ -119,13 +121,14 @@ class ArticleController extends Controller
                 'imageable_id' => $article->id,
                 'imageable_type' => Article::class
             ]);
-
-        return redirect()->route('article')->with('success', 'Artikel berhasil diupdate');
+            Gate::authorize('update', $article);
+            return redirect()->route('article')->with('success', 'Artikel berhasil diupdate');
         }
     }
 
     public function delete($id){
         $article = Article::find($id);
+        Gate::authorize('delete', $article);
         if(!$article){
             abort(404);
         }
