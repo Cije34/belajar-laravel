@@ -39,7 +39,7 @@ Single
                     <div class="d-flex align-items-center mb-3">
                         <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Author">
                         <div>
-                            <strong>Daniel Scott</strong><br>
+                            <strong>{{ $article->author->name}}</strong><br>
                             <small class="text-muted">May 23, 2025 • 4 min read</small>
                         </div>
                     </div>

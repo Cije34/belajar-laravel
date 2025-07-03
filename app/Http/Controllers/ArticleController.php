@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Models\Article;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
+
+
      public function index(Request $request){ //menampilkan data
+
         $judul = $request->judul;
         $article = Article::where('judul','LIKE','%'.$judul.'%')->orderBy('id','desc')->simplePaginate(10);
        // return $article;
@@ -20,7 +23,7 @@ class ArticleController extends Controller
 
     public function show(Request $request, $id){
         $judul = $request->judul;
-        $article = Article::with('comments', 'tags','image')->where('id', $id)->first();
+        $article = Article::with('comments', 'tags','image','author')->where('id', $id)->first();
         // return $article;
         if(!$article){
             abort(404);
@@ -43,14 +46,19 @@ class ArticleController extends Controller
         'tags' => 'array',
         'tags.*' => 'exists:tags,id', // Validasi untuk memastikan setiap tag yang dipilih ada di database
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk gambar
+        // 'author_id' => 'required|exists:users,id', // Validasi untuk author_id
 
     ]);
-    return $validate ;
+
+    // return $validate ;
     // Buat artikel terlebih dahulu
     $article = Article::create([
         'judul' => $validate['judul'],
         'content' => $validate['content'],
+        'author_id' => Auth::id(), // Menambahkan author_id
     ]);
+
+
 
     // Handle image upload SETELAH artikel dibuat
     if ($request->hasFile('image')) {

@@ -10,7 +10,10 @@ class Article extends Model
     use HasFactory;
     protected $table = "articles";
     protected $fillable = [
-        "judul","content"];
+        "judul",
+        "content",
+        "author_id", // Menambahkan author_id
+    ];
 
     public function comments (){
         return $this->morphMany(Comment::class, 'commentable');
@@ -23,5 +26,9 @@ class Article extends Model
 
     public function image(){
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function author(){
+        return $this->belongsTo(User::class, 'author_id');
     }
 }
