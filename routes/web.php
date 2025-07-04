@@ -1,12 +1,17 @@
 <?php
 
 use Dom\Comment;
+use App\Models\Article;
+use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
+use App\Jobs\NotifEmailMassal;
 
 Route::get('/', function () {
 return view('welcome');
@@ -33,3 +38,11 @@ route::middleware(['auth'])->group(function () {
 route::get('/login', [ AuthController::class, 'login'])->name('login');
 route::post('/login/postlogin', [ AuthController::class, 'auth']);
 route::get('/login/session', [ AuthController::class, 'sesion']);
+
+route::get('/email', function () {
+    $users = \App\Models\User::all();
+
+    foreach ($users as $user) {
+        NotifEmailMassal::dispatch($user)->afterCommit()->onQueue('MassEmail');
+    }
+});
